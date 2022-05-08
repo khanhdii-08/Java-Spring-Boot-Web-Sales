@@ -11,6 +11,12 @@ layout:decorate="~{admin/layout-page-admin}"
     <body>
         <div class="app">
             <div layout:fragment="content">
+
+                <div class="d-flex justify-content-end">
+                    <a th:href="@{/admin/products/addForm}" class="btn btn-success d-flex justify-content-end"><i class="bi bi-plus-square-fill"></i> Thêm sản phẩm</a>
+                
+                </div>
+
                 <div>
                     <table class="table table-striped">
                         <thead>

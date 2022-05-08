@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout-page-admin}">
+
+<head>
+    <title>Trang chủ</title>
+
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div>
+            <a class="btn btn-success" th:href="@{/admin/manufacturers/addForm}">Add new</a>
+
+            <div class="row" style=" margin-top: 10px; margin-bottom:10px">
+                <div class="col-md-10">
+                    <form method="get" action="#" th:action="@{/admin/manufacturers/search}">
+                        <!-- <div class="input-group">
+                            <div class="form-outline">
+                              <input type="search" class="form-control" name="name" id="name" placeholder="Tìm theo tên"/>
+                            </div>
+                            <button type="button" class="btn btn-primary">
+                                Tìm
+                              </button>
+                        </div> -->
+                        <div class="row" style="margin-top: 10px; margin-bottom:10px">
+                            <input type="text" class="form-control nav-input-search" name="name" id="name"
+                                placeholder="Tìm theo tên..." autocomplete="on">
+
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+
+
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Hãng sản xuất</th>
+                        <th>Quốc gia</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each=" manufacturer : ${manufacturers}">
+                        <td hidden th:text="${manufacturer.id}"></td>
+                        <td th:text="${manufacturer.name}"></td>
+                        <td th:text="${manufacturer.country}"></td>
+                        <td> <a th:href="@{'/admin/manufacturers/update/'+${manufacturer.id}}">Update</a>
+                            <a th:href="@{'/admin/manufacturers/delete/'+${manufacturer.id}}">Delete</a>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

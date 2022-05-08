@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout-page-admin}">
+
+<head>
+    <title>Trang chủ</title>
+
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <main class="container">
+            <section class="row">
+                <div class="col mt-4">
+                    <div class="card">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>List of Catergorys</h2>
+                            </div>
+                            <div class="card-body">
+                                <div th:if="@{mesage != null}" class="alert alert-primary" role="alert">
+                                    <i>[[${message}]]</i>
+                                </div>
+                                <table class="table table-striped tablefa-inverse">
+                                    <thead class="thead-inverse">
+                                        <tr>
+                                            <th>Id Categorys</th>
+                                            <th>Name</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="catergory : ${catergorys}">
+                                            <td scope="row" th:text="${catergory.id}"></td>
+                                            <td th:text="${catergory.name}"></td>
+                                            <td>
+                                                <a th:href="@{'/admin/catergorys/delete/' + ${catergory.id}}"><i class="bi bi-trash text-danger text-center"></i></a> |
+                                                <a th:href="@{'/admin/catergorys/edit/' + ${catergory.id}}"><i class="bi text-success bi-pencil-square text-center"></i></i></a>
+                                                
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+
+
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

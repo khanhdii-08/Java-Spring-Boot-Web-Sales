@@ -148,8 +148,8 @@ public class ProductController {
 			bindingResult.rejectValue("manufacturerId", "error.productRequest", "bạn cần chọn nhà sản xuất");
 		if (productRequest.getCatergoryId() == 0)
 			bindingResult.rejectValue("catergoryId", "error.productRequest", "bạn cần chọn loại sản phẩm");
-
-
+		
+		
 		if (bindingResult.hasErrors()) {
 			if (prId > 0) {
 				productRequest.setEdit(true);
@@ -160,14 +160,7 @@ public class ProductController {
 
 		Product product = new Product();
 		List<ProductOption> options = new ArrayList<>();
-
-
-		//create cart 1 id=1
-
-		// List<ProductOption> options = new ArrayList<>();
-
-		// create cart del bỏ id cart id=1 bở thêm list product
-
+		BeanUtils.copyProperties(productRequest, product);
 
 		// init manufacturer
 		Manufacturer manufacturer = new Manufacturer();
@@ -200,13 +193,13 @@ public class ProductController {
 		for (int i = 0; i < optionRequests.size(); i++) {
 			ProductOptionRequest optionRequest = optionRequests.get(i);
 			if (!optionRequest.getImageFile().isEmpty()) {
-
+				
 				ProductOption option = options.get(i);
 				if(optionRequest.getImageFile().isEmpty() && optionRequest.getImage() != null && productRequest.getIsEdit()) {
 					option.setImage(optionRequest.getImage());
 				}
 				else if(
-						((!optionRequest.getImageFile().isEmpty()) && optionRequest.getImage() != null) ||
+						((!optionRequest.getImageFile().isEmpty()) && optionRequest.getImage() != null) || 
 						(!optionRequest.getImageFile().isEmpty()) && optionRequest.getImage() == null)	{
 					UUID uuid = UUID.randomUUID();
 					String uuString = uuid.toString();
@@ -218,9 +211,9 @@ public class ProductController {
 					}
 					option.setImage(storageService.getStoredFilename(optionRequest.getImageFile(), uuString));
 					storageService.store(optionRequest.getImageFile(), option.getImage());
-
+					
 				}
-
+				
 			}
 		}
 
@@ -233,9 +226,9 @@ public class ProductController {
 			Product p1 = new Product();
 			p1.setId(productId);
 			ProductOption option = options.get(i);
-
+			
 			option.setProduct(p1);
-
+			
 			pOptionService.save(option);
 		}
 

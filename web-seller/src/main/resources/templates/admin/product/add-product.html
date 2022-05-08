@@ -16,7 +16,7 @@ layout:decorate="~{admin/layout-page-admin}"
                 enctype="multipart/form-data" th:object="${product}">
                 <div class="row justify-content-center">
                     <div class="col col-8">
-                        <input type="hidden" th:field="*{isEdit}">
+                        <input class="is-edit" type="hidden" th:field="*{isEdit}">
                         <div th:if="${product.isEdit}" class="input-group mb-2">
                             <span class="input-group-text">Mã sản phẩm</span>
                             <input class="form-control" readonly type="number" th:field="*{id}"  >
@@ -233,7 +233,7 @@ layout:decorate="~{admin/layout-page-admin}"
                         <input required oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Cần có SKU')" name="optionRequests[${i}].sku" type="text" class="input-table">
 
                     </td>
-                    <td>
+                    <td class="position-relative" th:if="${product.isEdit}">
                         <input
                             name="optionRequests[${i}].image" type="text" readonly
                             class="input-table show-image-old image-old">

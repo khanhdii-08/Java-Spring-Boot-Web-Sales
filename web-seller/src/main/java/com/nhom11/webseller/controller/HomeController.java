@@ -13,13 +13,13 @@ public class HomeController{
     @GetMapping(value = {"/", "/home"})
     public String getHome(){
 
-        return "admin/production-management";
+        return "admin/layout-page-admin";
 
     }
 
     @GetMapping("/hello")
     public String hello(){
-        return "admin/layout-page-admin";
+        return "user-donhang";
     }
 
 }
