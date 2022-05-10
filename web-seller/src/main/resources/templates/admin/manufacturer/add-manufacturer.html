@@ -9,6 +9,7 @@
 
 <body>
     <div layout:fragment="content">
+        <a class="btn btn-primary" th:href="@{/admin/manufacturers}">Danh sách</a>
         <form th:action="@{/admin/manufacturers/save}" method="post" th:object="${manufacturer}"
             class="form w-75 mt-5 d-flex flex-column justify-content-center align-items-center"
             enctype="multipart/form-data">

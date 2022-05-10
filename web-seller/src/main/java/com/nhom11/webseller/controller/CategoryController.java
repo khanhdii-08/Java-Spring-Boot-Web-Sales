@@ -23,38 +23,38 @@ import com.nhom11.webseller.service.CatergoryService;
 public class CategoryController {
 	@Autowired
 	private CatergoryService catergoryService;
-	
-	
-	
+
+
+
 	@GetMapping("/add")
 	public String add(Model model) {
-		
+
 		model.addAttribute("catergory", new CatergoryRequest());
 		return "admin/catergory/add";
 	}
 
 	@PostMapping("/saveOrUpdate")
 	public ModelAndView saveOrUpdate(ModelMap model,CatergoryRequest catergoryRequest) {
-		System.out.println(catergoryRequest.getId());
 		Catergory catergory = new Catergory();
 		catergory.setId(catergoryRequest.getId());
 		BeanUtils.copyProperties(catergoryRequest, catergory);
 		model.addAttribute("message","Catergory is saved!");
 		catergoryService.save(catergory);
-	
+
 		return new ModelAndView("forward:/admin/catergorys",model);
 	}
 	@RequestMapping("")
 	public String list(ModelMap model) {
 		List<Catergory> list = catergoryService.findAll();
 		model.addAttribute("catergorys", list);
+		model.addAttribute("catergory", new CatergoryRequest());
 		return "admin/catergory/list";
 	}
 	@GetMapping("delete/{id}")
 	public ModelAndView delete(ModelMap model,@PathVariable("id") Long id) {
 		catergoryService.deleteById(id);
 		model.addAttribute("message", "Catergory is delete!");
-		return new ModelAndView("forward:/admin/catergorys",model);
+		return new ModelAndView("redirect:/admin/catergorys",model);
 	}
 	@GetMapping("edit/{id}")
 	public ModelAndView edit(ModelMap model,@PathVariable("id") Long id) {
@@ -70,4 +70,14 @@ public class CategoryController {
 		model.addAttribute("message", "Catergory is not existed");
 		return new ModelAndView("redirect:/admin/catergorys",model);
 	}
+	@PostMapping("/update")
+    public ModelAndView updateOrUpdate(ModelMap model, CatergoryRequest dto){
+		Catergory catergory = new Catergory();
+		catergory.setId(dto.getId());
+		BeanUtils.copyProperties(dto, catergory);
+
+		catergoryService.save(catergory);
+
+        return new ModelAndView("redirect:/admin/catergorys",model) ;
+    }
 }

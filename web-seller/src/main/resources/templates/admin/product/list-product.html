@@ -1,25 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{admin/layout-page-admin}"
->
-    <head>
-        <title>Trang chủ</title>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout-page-admin}">
 
-    </head>
+<head>
+    <title>Trang chủ</title>
 
-    <body>
-        <div class="app">
-            <div layout:fragment="content">
+</head>
 
-                <div class="d-flex justify-content-end">
-                    <a th:href="@{/admin/products/addForm}" class="btn btn-success d-flex justify-content-end"><i class="bi bi-plus-square-fill"></i> Thêm sản phẩm</a>
-                
+<body>
+    <div class="app">
+        <div layout:fragment="content">
+            <h3 style="padding-top: 10px;text-align:center;">Danh sách Xe</h3>
+
+            <div style="padding: 10px 10px 0 0;">
+
+                <div class="" style="margin-bottom: 10px;">
+                    <a th:href="@{/admin/products/addForm}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Thêm sản phẩm</a>
+
+                </div>
+
+                <div class="row" style=" margin-top: 10px; margin-bottom:10px; padding-right: 15px;">
+                    <div class="col-md-12">
+                        <form method="get" action="#" th:action="@{/admin/catergorys/search}">
+
+                            <div class="row" style="margin-top: 10px; margin-bottom:10px ;padding-left:10px">
+                                <input type="text" class="form-control nav-input-search" name="name" id="name"
+                                    placeholder="Tìm theo tên..." autocomplete="on">
+
+                            </div>
+
+                        </form>
+                    </div>
+
                 </div>
 
                 <div>
-                    <table class="table table-striped">
-                        <thead>
+                    <table class="table table-striped table-bordered">
+                        <thead class="table-dark">
                             <tr>
                                 <th>Tên xe</th>
                                 <th>Acquy</th>
@@ -44,8 +62,10 @@ layout:decorate="~{admin/layout-page-admin}"
                                     JAPAN
                                 </td>
                                 <td>
-                                    <a id="btnDelete" th:href="@{'/admin/products/delete/' + ${item.id}}"><i class="bi bi-trash text-danger text-center"></i></a> |
-                                    <a  th:href="@{'/admin/products/edit/' + ${item.id}}"><i class="bi text-success bi-pencil-square text-center"></i></i></a>
+                                    <a id="btnDelete" th:href="@{'/admin/products/delete/' + ${item.id}}"><i
+                                            class="bi bi-trash text-danger text-center"></i></a> |
+                                    <a th:href="@{'/admin/products/edit/' + ${item.id}}"><i
+                                            class="bi text-success bi-pencil-square text-center"></i></i></a>
 
                                 </td>
                             </tr>
@@ -54,20 +74,22 @@ layout:decorate="~{admin/layout-page-admin}"
                 </div>
             </div>
         </div>
-        <script>
-            var btnDelete = document.querySelector("#btnDelete");
-            btnDelete.addEventListener("click", (e)=>{
-                e.preventDefault();
+    </div>
+    <script>
+        var btnDelete = document.querySelector("#btnDelete");
+        btnDelete.addEventListener("click", (e) => {
+            e.preventDefault();
 
-                var rs = confirm("xóa sản phẩm này ?");
-                var element = e.target;
-                console.log(e.target);
-                if(e.target.tagName == 'I')
-                    element = element.parentElement;
+            var rs = confirm("xóa sản phẩm này ?");
+            var element = e.target;
+            console.log(e.target);
+            if (e.target.tagName == 'I')
+                element = element.parentElement;
 
-                if(rs)
-                    window.location.href=element.href;
-            });
-        </script>
-    </body>
+            if (rs)
+                window.location.href = element.href;
+        });
+    </script>
+</body>
+
 </html>

@@ -28,7 +28,7 @@ public class UserRequest implements Serializable{
 	@Size(min = 4, message = "Mật Khẩu Dài Hơn Hoặc Bằng 8 Ký Tự")
 	private String password;
 
-	private boolean enabled;
+	private int enabled;
 
 	private String firstName;
 
@@ -43,6 +43,11 @@ public class UserRequest implements Serializable{
 	private Date registeredAt;
 
     private MultipartFile imageFile;
+
 	private String image;
+
+	private String authority = "ROLE_CUSTOMER";
+
+	private boolean isEdit = false;
 
 }

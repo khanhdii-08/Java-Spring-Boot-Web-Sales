@@ -9,67 +9,71 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/bootstrap-icons/bootstrap-icons.css}">
     <link rel="stylesheet" th:href="@{/css/add-product.css}">
+
+
+
+
 </head>
 
 <body>
-    <div class="app">
-        <header class="container">
-            <nav class="navbar navbar-light justify-content-between">
-                <a href="" class="navbar-brand">Trang Chủ</a>
+    <div class="app" style="background-color: #2980b9;">
+        <header class="container" >
+            <nav class="navbar justify-content-between" >
+                <a href="" class="navbar-brand link-light">Trang Chủ</a>
                 <!-- <a href=""><img style="width: 16px; border-radius: 50%;"
                         th:src="${user.image != null ? '/admin/users/images/'+user.image : '/image/default-image.jpg'}"
                         src="/image/default-image.jpg" alt="">
                         <span th:text="${user.username}"></span>
                     </a> -->
-                <a href=""><img style="width: 24px; border-radius: 50%;" src="/image/user.png" alt="">
-                    <span> khanhdii</span>
+                <a class="link-light nav-link d-flex align-items-center" href=""><img style="width: 24px; border-radius: 50%;" src="/image/user.png" alt="">
+                    <span class="ms-2"> khanhdii</span>
                 </a>
             </nav>
         </header>
         <div class="row flex-row mt-4 w-100" style="flex-wrap: nowrap;">
-            <div class="col-2 navbar-light ms-4" style="height: calc(100vh);">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="">Quản Lý Đơn Hàng</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Quản Lý Sản Phẩm</a>
+            <div class="col-2 navbar-light" style="height: calc(100vh); background-color:#2980b9; overflow: auto;"  >
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav__left" style="margin-left: 20px;">
+                    <li class="nav-item"><a class="nav-link" href="" style="color: white;" >Quản Lý Đơn Hàng</a></li>
+                    <li class="nav-item"><a class="nav-link" href="" style="color: white;">Quản Lý Sản Phẩm</a>
                         <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/products}">Tất cả sản phầm</a>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/products}" style="color: white;">Tất cả sản phầm</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/products/addForm}">Thêm sản
+                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/products/addForm}" style="color: white;">Thêm sản
                                     phầm</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">Quản Lý Loại Sản Phẩm</a>
+                    <li class="nav-item"><a class="nav-link" href="" style="color: white;">Quản Lý Loại Sản Phẩm</a>
                         <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/catergorys}">Tất cả loại xe</a>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/catergorys}" style="color: white;">Tất cả loại xe</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" th:href="@{/admin/catergorys/add}">Thêm sản
-                                    loại xe</a></li>
-                        </ul>  
+                            <!-- <li class="nav-item"><a class="nav-link" th:href="@{/admin/catergorys/add}" href="" style="color: white;" >Thêm sản
+                                    loại xe</a></li> -->
+                        </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">Quản Lý Nhà Sản Xuất</a>
+                    <li class="nav-item"><a class="nav-link" href="" style="color: white;">Quản Lý Nhà Sản Xuất</a>
                         <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" th:href="@{/admin/manufacturers}">Tất cả nhà sản xuất</a>
+                                <a class="nav-link" th:href="@{/admin/manufacturers}" style="color: white;">Tất cả nhà sản xuất</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" th:href="@{/admin/manufacturers/addForm}">Thêm nhà sản xuát</a></li>
-                        </ul> 
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" th:href="@{/admin/manufacturers/addForm}" href="" style="color: white;" >Thêm nhà sản xuát</a></li> -->
+                        </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="">Quản Lý Tag</a></li>
-                    <li class="nav-item"><a class="nav-link" href="">Quản Lý Tài Khoản</a>
+                    <li class="nav-item"><a class="nav-link" href="" style="color: white;">Quản Lý Tag</a></li>
+                    <li class="nav-item"><a class="nav-link" href="" style="color: white;">Quản Lý Tài Khoản</a>
                         <ul class="navbar-nav ms-4 me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link" th:href="@{/admin/users}">Tất cả tài khoản</a>
+                                <a class="nav-link" th:href="@{/admin/users}" style="color: white;">Tất cả tài khoản</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" th:href="@{/admin/users/addForm}">Thêm tài khoản</a>
+                                <a class="nav-link" th:href="@{/admin/users/addForm}" style="color: white;">Thêm tài khoản</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
-            <div layout:fragment="content" class="col-10" style="background: #fafafa;">
+            <div layout:fragment="content" class="col-10" style="background: #fafafa; padding-right: 0;">
 
             </div>
         </div>
@@ -77,10 +81,12 @@
     </div>
 
     </div>
-    <script th:src="@{/js/add-product.js}"></script>
+
     <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/add-product.js}"></script>
+    <script th:src="@{/js/add-user.js}"></script>
 
 </body>
 

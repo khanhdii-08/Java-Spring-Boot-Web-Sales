@@ -44,7 +44,8 @@ public class ManufacturerController {
     public String getManufacturers(ModelMap model){
 		List<Manufacturer> list = manufacturerService.findAll();
 		model.addAttribute("manufacturers",list);
-		
+		ManufacturerDto dto = new ManufacturerDto();
+		model.addAttribute("manufacturer",dto);
     	return "admin/manufacturer/list-manufacturer";
     }
 	@GetMapping("/addForm")
@@ -75,8 +76,12 @@ public class ManufacturerController {
 		
 		return new ModelAndView("forward:/admin/manufacturers",model);
 	}
+
+
 	@PostMapping("/save")
     public ModelAndView saveOrUpdate(ModelMap model, ManufacturerDto dto){
+		
+    	
 		Manufacturer manufacturer = new Manufacturer();
 		manufacturer.setId(0);
 		BeanUtils.copyProperties(dto, manufacturer);
@@ -113,7 +118,7 @@ public class ManufacturerController {
 	public ModelAndView delete(ModelMap model ,@PathVariable("id") Long id) {
 		manufacturerService.deleteById(id);
 		model.addAttribute("message","Manufacturer is deleted");
-		return new ModelAndView("forward:/admin/manufacturers",model);
+		return new ModelAndView("redirect:/admin/manufacturers",model);
 	}
 	
 }

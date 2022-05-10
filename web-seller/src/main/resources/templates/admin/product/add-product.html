@@ -11,6 +11,7 @@ layout:decorate="~{admin/layout-page-admin}"
     <body>
         <div class="d-flex justify-content-center">
             <div layout:fragment="content">
+                <h3 style="padding-top: 10px;text-align:center;">Thêm xe</h3>
                 <form action="#" th:action="@{/admin/products/add}"
                 class="form d-flex mt-3 flex-column justify-content-center align-items-center" method="post"
                 enctype="multipart/form-data" th:object="${product}">

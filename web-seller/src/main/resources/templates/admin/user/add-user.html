@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{admin/layout-page-admin}">
+
+<head>
+    <title>Trang chủ</title>
+
+</head>
+
+<body>
+    <div class="app d-flex justify-content-center">
+        <div layout:fragment="content">
+            <h3 style="padding-top: 10px;text-align:center;">Thêm người dùng</h3>
+            <form action="#" th:action="@{/admin/users/saveOrUpdate}"
+                class="form d-flex mt-3 flex-column justify-content-center align-items-center" method="post"
+                enctype="multipart/form-data" th:object="${user}">
+                <div class="row justify-content-center">
+                    <div class="col col-8 mt-3">
+
+                        <div class="row mb-2">
+                            <div class="input-group col">
+                                <span class="input-group-text">Họ</span>
+                                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Nhập họ">
+                            </div>
+                            <div class="input-group col">
+                                <span class="input-group-text">Tên</span>
+                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Nhập tên">
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Email</span>
+                            <input type="text" th:field="*{email}" class="form-control" placeholder="Nhập email">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Số điện thoại</span>
+                            <input type="text" th:field="*{mobile}" class="form-control"
+                                placeholder="Nhập số điện thoại">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Địa chỉ</span>
+                            <input type="text" th:field="*{address}" class="form-control" placeholder="Nhập địa chỉ">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Tài khoản</span>
+                            <input type="text" th:field="*{username}" class="form-control" placeholder="Nhập tài khoản">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Mật khẩu</span>
+                            <input type="password" th:field="*{password}" class="form-control"
+                                placeholder="Nhập mật khẩu">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Xác Nhận Mật khẩu</span>
+                            <input type="password" class="form-control" placeholder="Nhập lại mật khẩu">
+                        </div>
+                        <div class="input-group mb-2">
+                            <label class="input-group-text" for="inputGroupSelect">Options</label>
+                            <select th:field="*{authority}" class="form-select" id="inputGroupSelect">
+                                <option value="ROLE_EMPLOYEE" selected>EMPLOYEE</option>
+                                <option value="ROLE_MANAGER">MANAGER</option>
+                                <option value="ROLE_ADMIN">ADMIN</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2">
+                            <label class="input-group-text" for="inputGroupSelect">Trạng Thái</label>
+                            <select th:field="*{enabled}" class="form-select" id="inputGroupSelect">
+                                <option value="0">HOẠT ĐỘNG</option>
+                                <option value="1">NGƯNG HOẠT ĐỘNG</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col col-4 row flex-column align-items-center justify-content-center">
+                        <div class="wrap-image d-flex justify-content-center mb-3">
+                            <img id="image" src="" th:src="@{/image/user.png}" alt=""
+                                style="border-radius:50%; width: 125px; height: 125px;">
+                        </div>
+                        <input type="file" class="imageFile btn" name="imageFile" id="imageFile">
+                    </div>
+                </div>
+
+                <div class="w-50 align-self-center">
+                    <button type="submit" class="btn btn-primary w-100" th:text="${user.isEdit ? 'Cập nhật' : 'Lưu'}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
