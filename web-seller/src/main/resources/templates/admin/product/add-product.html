@@ -12,7 +12,7 @@ layout:decorate="~{admin/layout-page-admin}"
         <div class="d-flex justify-content-center">
             <div layout:fragment="content">
                 <h3 style="padding-top: 10px;text-align:center;">Thêm xe</h3>
-                <form action="#" th:action="@{/admin/products/add}"
+                <form action="#" th:action="@{/products/admin/add}"
                 class="form d-flex mt-3 flex-column justify-content-center align-items-center" method="post"
                 enctype="multipart/form-data" th:object="${product}">
                 <div class="row justify-content-center">
@@ -106,7 +106,10 @@ layout:decorate="~{admin/layout-page-admin}"
                             <option th:if="${catergories}" th:each="catergory : ${catergories}"
                                 th:value="${catergory.id}" th:text="${catergory.name}"></option>
                         </select>
-
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">Giá niêm yết</span>
+                            <input class="form-control" type="number" name="price" id="price" th:field="*{price}">
+                        </div>
                         <div>
 
                             <table class="table table-bordered ">
@@ -191,7 +194,7 @@ layout:decorate="~{admin/layout-page-admin}"
             for(var j = 0; j < imageHovers.length; j++){
                 if(imageHovers[j].value){
                     imageHovers[j].classList.add("image-hover");
-                    imageZooms[j].src ="/admin/products/images/"+ imageHovers[j].value;
+                    imageZooms[j].src ="/products/images/"+ imageHovers[j].value;
                 }
             }
 

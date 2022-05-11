@@ -1,62 +1,121 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout/main}"
->
-    <head>
-       <title>giỏ hàng</title>
-       <link rel="stylesheet" href="css/gioHang.css">
-    </head>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
 
-    <body>
-        <div layout:fragment="content">
-            <div class="wrapper container">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th style="width: 50%;">Sản Phẩm</th>
-                            <th style="width: 10%;">Đơn Giá</th>
-                            <th style="width: 8%;">Số Lượng</th>
-                            <th style="width: 21%; padding-left: 105px;">Thành Tiền</th>
-                            <th style="width: 11%;" >Thao Tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="product">
-                            <td data-th="Product">
-                                <div class="row">
-                                    <div class="col-sm-3 ">
-                                        <img src="./images/login.png" alt="" class="img-responsive" width="100">
-                                    </div>
-                                    <div class="col-sm-9" id="">
-                                        <div class="nomargin">Xe đạp điện</div>
-                                        <p>Mô tả</p>
-                                    </div>
+<head>
+    <title>giỏ hàng</title>
+    <link rel="stylesheet" th:href="@{css/gioHang.css}">
+    <link rel="stylesheet" th:href="@{/css/style_product_detail.css}">
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="wrapper container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="d-flex justify-content-center align-items-center">
+                            <input class="me-1" type="checkbox">Tất Cả
+                        </th>
+                        <th style="width: 40%;">Sản Phẩm</th>
+                        <th style="width: 10%;">Đơn Giá</th>
+                        <th style="width: 15%;">Số Lượng</th>
+                        <th style="width: 21%; padding-left: 105px;">Thành Tiền</th>
+                        <th style="width: 6%;">Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="datarow" th:each="item : ${carts}" class="product">
+                        <td>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <input type="checkbox">
+                            </div>
+                        </td>
+                        <td data-th="Product">
+                            <div class="row">
+
+                                <div class="col-sm-3 ">
+                                    <img th:src="${item.image != null ? '/cart/images/'+ item.image : '/image/default-image.jpg'}"
+                                        src="/image/default-image.jpg" alt="" class="img-responsive" width="100">
                                 </div>
-                            </td>
-                            <td data-th="Price">200.000 đ</td>
-                                <td data-th="Quantity"><input class="form-control text-center" value="1" type="number"></td> 
-                                <td data-th="Subtotal" class="text-center">200.000 đ</td> 
-                                <td class="actions" data-th="">
-                           
-                             <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i>
-                             </button>
-                            </td> 
-                           </tr>
-        
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td><a href="" class=" btn btn-warning"> <i class="fa-solid fa-angle-left"></i> Tiếp Tục Mua Hàng</a></td>
-                            <td colspan="2" class="hidden-xs"></td>
-                            <td class="hidden-xs text-center"><strong>Tổng tiền 200.000 đ</strong></td> 
-                            <td><a href="thanhToan.html" class=" btn btn-danger btn-block"> Thanh Toán <i class="fa fa-angle-right"></i> </a> </td>
-                        </tr>
-                    </tfoot>
-                </table>
-                
-            </div>
+                                <div class="col-sm-9 d-flex flex-column justify-content-center " id="">
+                                    <div th:text="${item.name}" class="nomargin">Xe đạp điện</div>
+                                    <p th:text="'Màu : '+${item.color}">Mô tả</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:with="price=${item.price}" class="priceOption">
+                            <span th:text="${#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')} + ' VND'"> </span>
+                        </td>
+                        <!-- <td data-th="Quantity"><input class="form-control text-center" th:value="${item.quantity}"
+                                type="number"></td> -->
+                        <td>
+                            <div class="quantity buttons_added mt-3">
+
+                                <input type="button" value="-" class="qtyControl minus">
+                                <input type="number" step="1" min="1" name="quantity" th:value="${item.quantity}"
+                                    class="input-text qty text pdQuantity" size="4">
+                                <input type="button" value="+" class="qtyControl plus">
+                            </div>
+                        </td>
+                        <td th:with="totalPrice=${item.price * item.quantity}" data-th="Subtotal" class="text-center totalPrice">
+                            <span th:text="${#numbers.formatDecimal(totalPrice, 0, 'COMMA', 0, 'POINT')} + ' VND'">
+                            </span>
+                        </td>
+                        <td class="actions" data-th="">
+                            <button class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><a href="" class=" btn btn-warning"> <i class="fa-solid fa-angle-left"></i> Tiếp Tục Mua
+                                Hàng</a></td>
+                        <td colspan="2" class="hidden-xs"></td>
+                        <td class="hidden-xs text-center"><strong>Tổng tiền 200.000 đ</strong></td>
+                        <td><a href="thanhToan.html" class=" btn btn-danger btn-block"> Thanh Toán <i
+                                    class="fa fa-angle-right"></i> </a> </td>
+                    </tr>
+                </tfoot>
+            </table>
+
         </div>
-    </body>
+        <script>
+
+            const minus = document.querySelectorAll('.minus');
+            const plus = document.querySelectorAll('.plus');
+            var quantity = document.querySelectorAll('.pdQuantity');
+            var totalPrice = document.querySelectorAll('.totalPrice');
+            var priceOption = document.querySelectorAll('.priceOption');
+            for (let index = 0; index < minus.length; index++) {
+
+                minus[index].addEventListener('click', function () {
+                    if (quantity[index].value > 1) {
+                        quantity[index].value--;
+
+                        // totalPrice[index].value = quantity[index]*priceOption[index];
+
+                    }
+                });
+            }
+
+            for (let index = 0; index < plus.length; index++) {
+                plus[index].addEventListener('click', function () {
+                        quantity[index].value++;
+                        // totalPrice[index].value = quantity[index]*priceOption[index];
+
+                });
+            }
+
+
+        </script>
+    </div>
+
+
+
+
+</body>
+
 </html>

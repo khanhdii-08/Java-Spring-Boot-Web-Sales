@@ -2,7 +2,7 @@ package com.nhom11.webseller.service.impl;
 
 import javax.transaction.Transactional;
 
-import com.nhom11.webseller.dao.AuthorityRepository;
+import com.nhom11.webseller.repository.AuthorityRepository;
 import com.nhom11.webseller.model.Authority;
 import com.nhom11.webseller.service.AuthorityService;
 

@@ -10,10 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.nhom11.webseller.dao.ManufacturerRepository;
-import com.nhom11.webseller.dao.ProductRepository;
 import com.nhom11.webseller.model.Manufacturer;
 import com.nhom11.webseller.model.Product;
+import com.nhom11.webseller.repository.ManufacturerRepository;
+import com.nhom11.webseller.repository.ProductRepository;
 import com.nhom11.webseller.service.ManufacturerService;
 
 @Service

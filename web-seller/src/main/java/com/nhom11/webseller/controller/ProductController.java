@@ -8,11 +8,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+import java.util.stream.IntStream;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,26 +28,40 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.util.StringUtils;
 
+import com.nhom11.webseller.dto.CartItemDto;
 import com.nhom11.webseller.dto.ProductOptionRequest;
 import com.nhom11.webseller.dto.ProductRequest;
+import com.nhom11.webseller.model.Cart;
+import com.nhom11.webseller.model.CartItem;
 import com.nhom11.webseller.model.Catergory;
 import com.nhom11.webseller.model.Manufacturer;
 import com.nhom11.webseller.model.Product;
 import com.nhom11.webseller.model.ProductOption;
+import com.nhom11.webseller.service.CartItemService;
+import com.nhom11.webseller.service.CartService;
 import com.nhom11.webseller.service.CatergoryService;
 import com.nhom11.webseller.service.ManufacturerService;
 import com.nhom11.webseller.service.ProductOptionService;
 import com.nhom11.webseller.service.ProductService;
 import com.nhom11.webseller.service.StorageService;
+import com.nhom11.webseller.service.UserService;
 
 import groovyjarjarpicocli.CommandLine.Parameters;
 
 @Controller
-@RequestMapping("admin/products")
+@RequestMapping("products")
 public class ProductController {
+
+	@Autowired
+	private CartService cartService;
+
+	@Autowired
+	private CartItemService cartItemService;
 
 	@Autowired
 	private ManufacturerService manufacturerService;
@@ -77,7 +95,7 @@ public class ProductController {
 		}).collect(Collectors.toList());
 	}
 
-	@GetMapping("/addForm")
+	@GetMapping("/admin/addForm")
 	public String showFormAddProduct(Model model) {
 		ProductRequest product = new ProductRequest();
 		product.setEdit(false);
@@ -89,7 +107,7 @@ public class ProductController {
 		return "admin/product/add-product";
 	}
 
-	@GetMapping("/edit/{id}")
+	@GetMapping("/admin/edit/{id}")
 	public ModelAndView showFormEdit(ModelMap model, @PathVariable long id) {
 		Optional<Product> productO = productService.findById(id);
 		Product product = productO.get();
@@ -112,7 +130,7 @@ public class ProductController {
 		return new ModelAndView("/admin/product/add-product", model);
 	}
 
-	@GetMapping("/delete/{id}")
+	@GetMapping("/admin/delete/{id}")
 	public String deleteProduct(@PathVariable long id) {
 		Product p = new Product();
 		p.setId(id);
@@ -120,7 +138,7 @@ public class ProductController {
 		pOptionService.deleteProductOptionByProductID(id);
 		productService.delete(p);
 
-		return "redirect:/admin/products";
+		return "redirect:/products/admin";
 	}
 
 	@GetMapping("/images/{filename:.+}")
@@ -132,14 +150,14 @@ public class ProductController {
 				.body(file);
 	}
 
-	@GetMapping
+	@GetMapping("/admin")
 	public String list(ModelMap model) {
 		List<Product> list = productService.findAll();
 		model.addAttribute("products", list);
 		return "admin/product/list-product";
 	}
 
-	@PostMapping("/add")
+	@PostMapping("/admin/add")
 	public ModelAndView addProduct(ModelMap model, @ModelAttribute(name = "product") ProductRequest productRequest,
 			BindingResult bindingResult) {
 
@@ -148,8 +166,8 @@ public class ProductController {
 			bindingResult.rejectValue("manufacturerId", "error.productRequest", "bạn cần chọn nhà sản xuất");
 		if (productRequest.getCatergoryId() == 0)
 			bindingResult.rejectValue("catergoryId", "error.productRequest", "bạn cần chọn loại sản phẩm");
-		
-		
+
+
 		if (bindingResult.hasErrors()) {
 			if (prId > 0) {
 				productRequest.setEdit(true);
@@ -193,13 +211,13 @@ public class ProductController {
 		for (int i = 0; i < optionRequests.size(); i++) {
 			ProductOptionRequest optionRequest = optionRequests.get(i);
 			if (!optionRequest.getImageFile().isEmpty()) {
-				
+
 				ProductOption option = options.get(i);
 				if(optionRequest.getImageFile().isEmpty() && optionRequest.getImage() != null && productRequest.getIsEdit()) {
 					option.setImage(optionRequest.getImage());
 				}
 				else if(
-						((!optionRequest.getImageFile().isEmpty()) && optionRequest.getImage() != null) || 
+						((!optionRequest.getImageFile().isEmpty()) && optionRequest.getImage() != null) ||
 						(!optionRequest.getImageFile().isEmpty()) && optionRequest.getImage() == null)	{
 					UUID uuid = UUID.randomUUID();
 					String uuString = uuid.toString();
@@ -211,9 +229,9 @@ public class ProductController {
 					}
 					option.setImage(storageService.getStoredFilename(optionRequest.getImageFile(), uuString));
 					storageService.store(optionRequest.getImageFile(), option.getImage());
-					
+
 				}
-				
+
 			}
 		}
 
@@ -226,13 +244,116 @@ public class ProductController {
 			Product p1 = new Product();
 			p1.setId(productId);
 			ProductOption option = options.get(i);
-			
+
 			option.setProduct(p1);
-			
+
 			pOptionService.save(option);
 		}
 
-		return new ModelAndView("redirect:/admin/products");
+		return new ModelAndView("redirect:/products/admin");
 	}
+
+
+	@GetMapping({"/", ""})
+	public String showProduct(Model model,
+			@RequestParam(name="nameSearch",required=false) String name,
+			@RequestParam(name = "catergoryId", required = false) Optional<Long> catergoryId,
+			@RequestParam(name = "page", required = false) Optional<Integer> page,
+			@RequestParam(name = "size", required = false) Optional<Integer> size,
+			@RequestParam(name = "sort", required = false) Optional<String> sort
+			){
+
+		int currentPage = page.orElse(1);
+		int pageSize = size.orElse(5);
+		long cId = catergoryId.orElse((long) 0);
+		String sortType = null;
+		String sortBy = "name";
+		Pageable pageable = PageRequest.of(currentPage -1, pageSize, Sort.by(sortBy));
+		if(sort.isPresent() && !sort.get().equals(sortBy)) {
+			String[] temp = sort.get().split("\\.");
+			sortBy = temp[0];
+			sortType = temp[1];
+			System.out.println("SORT TYPE: "+ sortType);
+			switch (sortType) {
+			case "DESC":
+				pageable = PageRequest.of(currentPage -1, pageSize, Sort.by(sortBy).descending());
+				break;
+
+			default:
+				pageable = PageRequest.of(currentPage -1, pageSize, Sort.by(sortBy));
+				break;
+			}
+		}
+
+
+
+		Page<Product> resultPage = null;
+
+		if(cId!=0) {
+			resultPage = productService.findByCatergoryId( cId, pageable);
+		}else {
+
+			if(name == null) {
+				resultPage = null;
+				resultPage = productService.findAll(pageable);
+			}
+			else{
+				resultPage = null;
+				resultPage = productService.findAllByName(name, pageable);
+			}
+		}
+		System.out.println("PAGE NUMBER" + resultPage.getNumber());
+		int totalPages = resultPage.getTotalPages();
+		if(totalPages > 0){
+			int start = Math.max(1, currentPage-2);
+			int end = Math.min(currentPage + 2, totalPages);
+
+			if(totalPages > 5){
+				if(end == totalPages) start = end -5;
+				else if(start == 1) end = start + 5;
+			}
+			List<Integer> pageNumbers = IntStream.rangeClosed(start, end)
+												.boxed()
+												.collect(Collectors.toList());
+			model.addAttribute("pageNumbers", pageNumbers);
+			model.addAttribute("catergoryId", cId);
+		}
+
+		model.addAttribute("nameSearch",name);
+		model.addAttribute("productPage", resultPage);
+		String s = sort.isEmpty() ? "name" : sort.get();
+		model.addAttribute("sort", s);
+		return "sanpham";
+	}
+
+	@GetMapping("/{id}")
+	public String showProduct(@PathVariable long id, Model model, @ModelAttribute(name = "cartitem") CartItemDto cartItemDto) {
+		model.addAttribute("cartitem", new CartItemDto());
+		Optional<Product> p = productService.findById(id);
+		if(p.isPresent()) {
+			Product product = p.get();
+			if(cartItemDto.getPrice() > 0 && cartItemDto.getQuantity() >0){
+				System.out.println("Test "+cartItemDto);
+
+				Cart cart = cartService.findByUserName("khanhdii");
+				Optional<ProductOption> productOptionO = pOptionService.findById(cartItemDto.getIdOption());
+				ProductOption productOption = productOptionO.get();
+				CartItem cartItem = new CartItem(cart, productOption, cartItemDto.getQuantity(), cartItemDto.getPrice());
+				cartItemService.save(cartItem);
+			}
+			model.addAttribute("product", product);
+		}
+		return "ct-sanpham";
+	}
+
+	// @ModelAttribute("totalProduct")
+	// public long getTotalProduct() {
+	// 	Cart cart = cartService.findByUserName("khanhdii");
+	// 	List<CartItem> cartItems = cartItemService.findByCartId(cart.getId());
+	// 	return cartItems.size();
+	// }
+
+
+
 
 }

@@ -57,7 +57,7 @@
         <div style="padding-right: 10px; padding-top: 10px;">
 
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                <i class="bi bi-plus-circle"></i> Thêm loại xe
+                <i class="bi bi-plus-circle"> Thêm nhà sản xuất</i>
             </button>
             <!-- The Modal ADD -->
             <div class="modal" id="myModal">
@@ -72,7 +72,7 @@
 
                         <!-- Modal body -->
                         <div class="modal-body d-flex justify-content-center align-items-center">
-                            <form th:action="@{/admin/catergorys/saveOrUpdate}" method="post" th:object="${catergory}"
+                            <form th:action="@{/admin/catergories/saveOrUpdate}" method="post" th:object="${catergory}"
                                 class="form w-100 mt-3 d-flex flex-column justify-content-center align-items-center"
                                 enctype="multipart/form-data">
                                 <div class="mb-3" style="width: 100%;">
@@ -103,10 +103,10 @@
 
             <div class="row" style=" margin-top: 10px; margin-bottom:10px; padding-right: 15px;">
                 <div class="col-md-12">
-                    <form method="get" action="#" th:action="@{/admin/catergorys/search}">
+                    <form method="get" action="#" th:action="@{/admin/catergories/search}">
 
                         <div class="row" style="margin-top: 10px; margin-bottom:10px ;padding-left:10px">
-                            <input type="text" class="form-control nav-input-search" name="name" id="name"
+                            <input type="text" class="form-control nav-input-search" name="nameSearch" id="name"
                                 placeholder="Tìm theo tên..." autocomplete="on">
 
                         </div>
@@ -119,7 +119,7 @@
 
 
 
-            <table class="table table-striped table-bordered">
+            <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
@@ -130,15 +130,14 @@
                 <tbody>
                     <tr th:each=" catergory : ${catergorys}">
                         <td id="id" th:text="${catergory.id}"></td>
-                        <td id="name" th:text="${catergory.name}"></td>
+                        <td id="name"  th:text="${catergory.name}"></td>
 
                         <td>
 
-                            <a th:id="${catergory.id}" onclick="modalHandler(this)" data-bs-toggle="modal"
-                                data-bs-target="#modalUpdate">
-                                <i class="bi text-success bi-pencil-square text-center"></i>
-                            </a> |
-                            <a th:href="@{'/admin/catergorys/delete/'+${catergory.id}}"><i
+                            <a th:id="${catergory.id}" onclick="modalHandler(this)"  data-bs-toggle="modal" data-bs-target="#modalUpdate">
+                            <i class="bi text-success bi-pencil-square text-center"></i>
+                            </a>
+                            <a th:href="@{'/admin/catergories/delete/'+${catergory.id}}"><i
                                     class="bi bi-trash text-danger text-center"></i></a>
                         </td>
 
@@ -159,14 +158,14 @@
 
                         <!-- Modal body -->
                         <div class="modal-body d-flex justify-content-center align-items-center">
-                            <form th:action="@{/admin/catergorys/update}" method="post" th:object="${catergory}"
+                            <form th:action="@{/admin/catergories/update}" method="post" th:object="${catergory}"
                                 class="form w-100 mt-3 d-flex flex-column justify-content-center align-items-center"
                                 enctype="multipart/form-data">
                                 <input hidden type="text" class="form-control text-edit-id" th:field="*{id}">
                                 <div class="mb-3" style="width: 100%;">
                                     <label for="" class="form-label">Tên loại xe</label>
-                                    <input type="text" class="form-control text-edit-name" id="name"
-                                        aria-describedby="nameError" th:field="*{name}">
+                                    <input type="text" class="form-control text-edit-name" id="name" aria-describedby="nameError"
+                                        th:field="*{name}">
                                     <!-- <div id="nameError" class="form-text"></div> -->
                                 </div>
 
@@ -184,7 +183,7 @@
                     </div>
                 </div>
                 <script>
-                    function modalHandler(target) {
+                    function modalHandler(target){
                         var id = target.getAttribute("id");
                         var trElement = target.parentElement.parentElement;
                         var name = trElement.querySelector("#name");

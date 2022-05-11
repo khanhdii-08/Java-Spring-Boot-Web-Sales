@@ -1,25 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-layout:decorate="~{layout/main}"
->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/main}">
 
 <head>
     <title>Sản phẩm</title>
-    <link rel="stylesheet" href="css/sanphamprice.css">
-    <!-- <link rel="stylesheet" href="css/price.css"> -->
-    <link rel="stylesheet" href="css/sanpham.css">
     
+    <link rel="stylesheet" th:href="@{/css/sanpham.css}">
 
 </head>
 
 <body>
 
     <div layout:fragment="content">
-       
+
         <div class="abc bg-black d-flex align-items-baseline" style="padding:10px 0">
 
-            <a href="" style="color:white; padding: 0 10px ; text-decoration: none;">Home</a>
+            <a th:href="@{/home}" style="color:white; padding: 0 10px ; text-decoration: none;">Home</a>
             <span style="color:white">></span>
             <a style="color:white;padding-left: 10px; text-decoration: none;">Sản phẩm</a>
         </div>
@@ -129,42 +125,55 @@ layout:decorate="~{layout/main}"
                 <div class="container__right col-md-9 bg-light">
                     <div class="container__right-top">
                         <div class="top__sort">
-
-                            <div class="dropdown">
-                                <label for="">Sắp xếp theo: </label>
-                                <button class="btn dropdown-toggle btnSortDropdown" type="button"
-                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Sort by latest
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Bán chạy nhất</a></li>
-                                    <li><a class="dropdown-item" href="#">Giá cao nhất</a></li>
-                                    <li><a class="dropdown-item" href="#">Giá thấp nhất</a></li>
-                                </ul>
-                            </div>
+                            <form action="">
+                                <div class="d-flex">
+                                    <label for="">Sắp xếp theo: </label>
+                                    <select name="sort" style="padding: 5px; outline: none; border-radius: 5px;" 
+                                        class="ms-1" aria-label="Default select example"
+                                        onchange="this.form.submit()"
+                                    >
+                                        <option th:selected="${sort == 'name'}" value="name">Sắp xếp</option>
+                                        <option th:selected="${sort == 'price.ASC'}" value="price.ASC">Giá tăng dần</option>
+                                        <option th:selected="${sort == 'price.DESC'}" value="price.DESC">Giá giảm dần</option>
+                                    </select>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="container__right-center bg-light">
                         <div class="product row">
-                            <ul class="product__list row">
-                                <li class="product__item col-sm-6 col-md-3">
+                            <div class="row" th:if="${!productPage.hasContent()}">
+                                <div class="col">
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Không tìm thấy sản phẩm nào</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="product__list row" th:if="${productPage.hasContent()}">
+                                <li th:each="product, stat : ${productPage.content}"
+                                    class="product__item col-sm-6 col-md-3">
+                                    
                                     <div class="product__item-bao">
                                         <div class="product__item-top">
                                             <div class="product__item-img d-block">
-                                                <a href="" class="img">
-                                                    <img src="./image/products/product_01.jpg"
+                                                <a th:href="@{'/products/' + ${product.id}}" class="img">
+                                                    <img  th:src="${'/products/images/'+ product.productOptions[0].image}"
+                                                        src="./image/products/product_01.jpg"
                                                         style="width: 100%; height: 100%; display:block" alt="">
                                                 </a>
 
-                                                <a href="/ctsp" class="view-info">Xem chi tiết</a>
+                                                <a th:href="@{'/products/' + ${product.id}}" class="view-info">Xem chi
+                                                    tiết</a>
                                             </div>
                                         </div>
 
                                         <div class="product__item-name text-center">
-                                            <label for="">Xe đạp điện Vinfast new 2022</label>
+                                            <label th:text="${'Xe đạp điện ' + product.name}" for="">Xe đạp điện Vinfast
+                                                new 2022</label>
                                         </div>
                                         <div class="product__item-price text-center">
-                                            <h5>11.000.000 vnđ</h5>
+                                            <h5 th:text="${product.price + ' vnđ'}">11.000.000 vnđ
+                                            </h5>
                                         </div>
                                         <!-- btn -->
                                         <!-- <div class="product__item-btnAction d-flex justify-content-center align-items-center">
@@ -175,107 +184,31 @@ layout:decorate="~{layout/main}"
 
 
                                 </li>
-                                <li class="product__item col-sm-6 col-md-3">
-                                    <div class="product__item-bao">
-                                        <div class="product__item-top">
-                                            <div class="product__item-img d-block">
-                                                <a href="" class="img">
-                                                    <img src="./image/products/product_01.jpg"
-                                                        style="width: 100%; height: 100%; display:block" alt="">
-                                                </a>
-
-                                                <a href="/ctsp" class="view-info">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="product__item-name text-center">
-                                            <label for="">Xe đạp điện Vinfast new 2022</label>
-                                        </div>
-                                        <div class="product__item-price text-center">
-                                            <h5>11.000.000 vnđ</h5>
-                                        </div>
-                                        <!-- btn -->
-                                        <!-- <div class="product__item-btnAction d-flex justify-content-center align-items-center">
-                                            <button type="button" class="btn btn-warning btnThemVaoGio" style="margin: 0 0 0 2px; width:60%;font-size:11px; font-weight: 500; color: white;">Thêm Vào Giỏ</button>
-                                            <button type="button" class="btn btn-danger btnMuaNgay" style="margin: 0 0 0 2px; width: 40%;font-size:11px;font-weight: 500;">Mua Ngay</button>
-                                        </div> -->
-                                    </div>
-
-
-                                </li>
-                                <li class="product__item col-sm-6 col-md-3">
-                                    <div class="product__item-bao">
-                                        <div class="product__item-top">
-                                            <div class="product__item-img d-block">
-                                                <a href="" class="img">
-                                                    <img src="./image/products/product_01.jpg"
-                                                        style="width: 100%; height: 100%; display:block" alt="">
-                                                </a>
-
-                                                <a href="/ctsp" class="view-info">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="product__item-name text-center">
-                                            <label for="">Xe đạp điện Vinfast new 2022</label>
-                                        </div>
-                                        <div class="product__item-price text-center">
-                                            <h5>11.000.000 vnđ</h5>
-                                        </div>
-                                        <!-- btn -->
-                                        <!-- <div class="product__item-btnAction d-flex justify-content-center align-items-center">
-                                            <button type="button" class="btn btn-warning btnThemVaoGio" style="margin: 0 0 0 2px; width:60%;font-size:11px; font-weight: 500; color: white;">Thêm Vào Giỏ</button>
-                                            <button type="button" class="btn btn-danger btnMuaNgay" style="margin: 0 0 0 2px; width: 40%;font-size:11px;font-weight: 500;">Mua Ngay</button>
-                                        </div> -->
-                                    </div>
-
-
-                                </li>
-                                <li class="product__item col-sm-6 col-md-3">
-                                    <div class="product__item-bao">
-                                        <div class="product__item-top">
-                                            <div class="product__item-img d-block">
-                                                <a href="" class="img">
-                                                    <img src="./image/products/product_01.jpg"
-                                                        style="width: 100%; height: 100%; display:block" alt="">
-                                                </a>
-
-                                                <a href="/ctsp" class="view-info">Xem chi tiết</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="product__item-name text-center">
-                                            <label for="">Xe đạp điện Vinfast new 2022</label>
-                                        </div>
-                                        <div class="product__item-price text-center">
-                                            <h5>11.000.000 vnđ</h5>
-                                        </div>
-                                        <!-- btn -->
-                                        <!-- <div class="product__item-btnAction d-flex justify-content-center align-items-center">
-                                            <button type="button" class="btn btn-warning btnThemVaoGio" style="margin: 0 0 0 2px; width:60%;font-size:11px; font-weight: 500; color: white;">Thêm Vào Giỏ</button>
-                                            <button type="button" class="btn btn-danger btnMuaNgay" style="margin: 0 0 0 2px; width: 40%;font-size:11px;font-weight: 500;">Mua Ngay</button>
-                                        </div> -->
-                                    </div>
-
-
-                                </li>
-
                             </ul>
                         </div>
                     </div>
                     <div class="container__right-bottom d-flex justify-content-center align-items-center">
-                        <nav aria-label="Page navigation example">
+                        <nav aria-label="Page navigation example" th:if="${productPage.totalPages > 0}">
                             <ul class="pagination">
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
+                                <li th:class="${1 == (productPage.number + 1) ? 'page-item active' : 'page-item'}">
+                                    <a class="page-link"
+                                        th:href="@{/products(sort= ${sort}, nameSearch = ${nameSearch},catergoryId = ${catergoryId}, size = ${productPage.size}, page=${1} )}"
+                                        href="#" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
+                                <li th:if="${productPage.totalPages > 1}" th:each="pageNumber : ${pageNumbers}"
+                                    th:class="${pageNumber == (productPage.number + 1) ? 'page-item active' : 'page-item'}">
+                                    <a class="page-link"
+                                        th:href="@{/products(sort= ${sort}, nameSearch = ${nameSearch},catergoryId = ${catergoryId}, size = ${productPage.size}, page=${pageNumber} )}"
+                                        th:text="${pageNumber}"></a>
+                                </li>
+
+                                <li th:if="${!(productPage.totalPages == 1)}"
+                                    th:class="${productPage.totalPages == (productPage.number + 1) ? 'page-item active' : 'page-item'}">
+                                    <a class="page-link"
+                                        th:href="@{/products(sort= ${sort}, nameSearch = ${nameSearch},catergoryId = ${catergoryId}, size = ${productPage.size}, page=${productPage.totalPages} )}"
+                                        href="#" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -286,7 +219,7 @@ layout:decorate="~{layout/main}"
             </div>
         </div>
     </div>
-    
+
 
 </body>
 

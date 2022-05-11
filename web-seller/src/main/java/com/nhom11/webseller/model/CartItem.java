@@ -24,14 +24,14 @@ public class CartItem {
 	@JoinColumn(name = "cart_id")
 	@EqualsAndHashCode.Exclude
 	private Cart cart;
-	
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	@EqualsAndHashCode.Exclude
-	private Product product;
-	
-	
+	private ProductOption product;
+
+
 	private int quantity;
 	private float price;
 }

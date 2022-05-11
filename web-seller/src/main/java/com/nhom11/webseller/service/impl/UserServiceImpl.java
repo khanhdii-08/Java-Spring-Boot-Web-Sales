@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 import javax.transaction.Transactional;
 
-import com.nhom11.webseller.dao.UserRepository;
+import com.nhom11.webseller.repository.UserRepository;
 import com.nhom11.webseller.model.User;
 import com.nhom11.webseller.service.UserService;
 

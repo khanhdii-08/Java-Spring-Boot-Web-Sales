@@ -1,5 +1,6 @@
 package com.nhom11.webseller.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -25,11 +26,11 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor(staticName = "build")
 @NoArgsConstructor
-public class Product {
+public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	@Column(columnDefinition = "nvarchar(255)", nullable = false)
 	private String name;
 	private int length;
@@ -37,8 +38,8 @@ public class Product {
 	private int height;
 	@Column(name = "maximum_load")
 	private int maximumLoad;
-	
-	
+
+
 	@Column(name = "minimum_maximum_speed")
 	private int minimumMaximumSpeed;
 	@Column(name = "maximum_maximum_speed")
@@ -49,39 +50,43 @@ public class Product {
 	private int distanceMin;
 	@Column(name = "distance_max")
 	private int distanceMax;
-	
+
+	private float price;
+
 	@ManyToOne
 	@JoinColumn(name = "manufacturer_id")
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private Manufacturer manufacturer;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "catergory_id")
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private Catergory catergory;
-	
-	
+
+
 	@OneToMany(mappedBy = "product", cascade =CascadeType.ALL)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private List<ProductTag> productTags;
-	
-	
-	
+
+
+
 	@OneToMany(mappedBy = "product", cascade =CascadeType.ALL)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private List<ProductOption> productOptions;
-	
-	@OneToMany(mappedBy = "product", cascade =CascadeType.ALL)
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	private List<OrderDetail> orderDetails;
-	
-	@OneToMany(mappedBy = "product", cascade =CascadeType.ALL)
-	@EqualsAndHashCode.Exclude
-	@ToString.Exclude
-	private List<CartItem> cartItems;
+
+	// @OneToMany(mappedBy = "product", cascade =CascadeType.ALL)
+	// @EqualsAndHashCode.Exclude
+	// @ToString.Exclude
+	// private List<OrderDetail> orderDetails;
+
+	// @OneToMany(mappedBy = "product", cascade =CascadeType.ALL)
+	// @EqualsAndHashCode.Exclude
+	// @ToString.Exclude
+	// private List<CartItem> cartItems;
+
+
 }

@@ -24,14 +24,14 @@ public class OrderDetail {
 	@JoinColumn(name = "order_id")
 	@EqualsAndHashCode.Exclude
 	private Order order;
-	
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	@EqualsAndHashCode.Exclude
-	private Product product;
-	
+	private ProductOption product;
+
 	private int quantity;
 	private float price;
-	
+
 }

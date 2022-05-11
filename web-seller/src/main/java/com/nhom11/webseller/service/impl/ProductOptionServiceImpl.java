@@ -2,13 +2,14 @@ package com.nhom11.webseller.service.impl;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nhom11.webseller.dao.ProductOptionRepository;
 import com.nhom11.webseller.model.ProductOption;
+import com.nhom11.webseller.repository.ProductOptionRepository;
 import com.nhom11.webseller.service.ProductOptionService;
 import com.nhom11.webseller.service.StorageService;
 
@@ -50,6 +51,13 @@ public class ProductOptionServiceImpl implements ProductOptionService{
 	@Override
 	public <S extends ProductOption> S save(S entity) {
 		return optionRepository.save(entity);
+	}
+
+
+
+	@Override
+	public Optional<ProductOption> findById(Long id) {
+		return optionRepository.findById(id);
 	}
 	
 	

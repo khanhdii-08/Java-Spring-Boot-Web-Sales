@@ -10,8 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nhom11.webseller.dao.CatergoryRepository;
 import com.nhom11.webseller.model.Catergory;
+import com.nhom11.webseller.repository.CatergoryRepository;
 import com.nhom11.webseller.service.CatergoryService;
 
 @Service
@@ -130,6 +130,12 @@ public class CatergoryServiceImpl implements CatergoryService{
 	@Override
 	public Catergory getById(Long id) {
 		return catergoryRepository.getById(id);
+	}
+
+	@Override
+	public List<Catergory> findByNameContaining(String name) {
+		name = name.trim();
+		return catergoryRepository.findByNameContaining(name);
 	}
 
 

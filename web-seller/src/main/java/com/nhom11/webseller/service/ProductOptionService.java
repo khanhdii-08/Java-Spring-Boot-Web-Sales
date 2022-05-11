@@ -1,6 +1,7 @@
 package com.nhom11.webseller.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.nhom11.webseller.model.ProductOption;
 
@@ -15,5 +16,7 @@ public interface ProductOptionService {
 	<S extends ProductOption> S save(S entity);
 
 	List<ProductOption> findProductOptionsByProductId(long pId);
+
+	Optional<ProductOption> findById(Long id);
 
 }

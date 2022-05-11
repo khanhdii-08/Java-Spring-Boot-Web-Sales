@@ -21,21 +21,21 @@ layout:decorate="~{layout/main}"
                 </div>
     
                 <div class="owl-carousel owl-theme">
-                    <div class="item">
-                        <a href="/product_detail.html" id="item-1" class="sale__item-link">
+                    <div class="item" th:each="product : ${products}" th:if="product[10] !=null">
+                        <a  th:href="@{'/products/' + ${product.id}}" id="item-1" class="sale__item-link">
                             <div class="sale__wrap-img">
-                                <img src="/image/item/item_01.jpg" alt="" class="sale__img">
-                                <div class="sale__view">
+                                <img th:src="${'home/images/'+ product.productOptions[0].image}" src="/image/item/item_01.jpg" alt="" class="sale__img">
+                                <div th:href="@{'/products/' + ${product.id}}" class="sale__view">
                                     <span>Xem chi tiết</span>
                                 </div>
                             </div>
-                            <span class="sale__discript d-block">Xe đạp điện Osakar A9 New 2021
+                            <span th:text="${product.name}" class="sale__discript d-block">Xe đạp điện Osakar A9 New 2021
                             </span>
-                            <span class="sale__price text-danger d-block">
+                            <span th:text="${product.price} + 'đ'" class="sale__price text-danger d-block">
                                 11.600.00<sup> ₫</sup></span>
                         </a>
                     </div>
-                    <div class="item">
+                    <!-- <div class="item">
                         <a href="/product_detail.html" id="item-2" class="sale__item-link">
                             <div class="sale__wrap-img">
                                 <img src="/image/item/item_02.jpg" alt="" class="sale__img">
@@ -104,7 +104,7 @@ layout:decorate="~{layout/main}"
                             <span class="sale__price text-danger d-block">
                                 11.600.00<sup> ₫</sup></span>
                         </a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

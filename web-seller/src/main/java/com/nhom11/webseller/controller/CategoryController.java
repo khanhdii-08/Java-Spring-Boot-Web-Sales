@@ -2,7 +2,7 @@ package com.nhom11.webseller.controller;
 
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,72 +12,90 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.nhom11.webseller.dto.CatergoryRequest;
+import com.nhom11.webseller.dto.CatergoryDto;
 import com.nhom11.webseller.model.Catergory;
 import com.nhom11.webseller.service.CatergoryService;
 
 @Controller
-@RequestMapping("admin/catergorys")
+@RequestMapping("admin/catergories")
 public class CategoryController {
 	@Autowired
 	private CatergoryService catergoryService;
-
-
-
+	
+	
+	
 	@GetMapping("/add")
 	public String add(Model model) {
-
-		model.addAttribute("catergory", new CatergoryRequest());
+		
+		model.addAttribute("catergory", new CatergoryDto());
 		return "admin/catergory/add";
 	}
 
 	@PostMapping("/saveOrUpdate")
-	public ModelAndView saveOrUpdate(ModelMap model,CatergoryRequest catergoryRequest) {
+	public ModelAndView saveOrUpdate(ModelMap model,CatergoryDto catergoryRequest) {
+		System.out.println(catergoryRequest.getId());
 		Catergory catergory = new Catergory();
 		catergory.setId(catergoryRequest.getId());
 		BeanUtils.copyProperties(catergoryRequest, catergory);
 		model.addAttribute("message","Catergory is saved!");
 		catergoryService.save(catergory);
-
-		return new ModelAndView("forward:/admin/catergorys",model);
+	
+		return new ModelAndView("forward:/admin/catergories",model);
 	}
 	@RequestMapping("")
 	public String list(ModelMap model) {
 		List<Catergory> list = catergoryService.findAll();
 		model.addAttribute("catergorys", list);
-		model.addAttribute("catergory", new CatergoryRequest());
+		model.addAttribute("catergory", new CatergoryDto());
 		return "admin/catergory/list";
 	}
 	@GetMapping("delete/{id}")
 	public ModelAndView delete(ModelMap model,@PathVariable("id") Long id) {
 		catergoryService.deleteById(id);
 		model.addAttribute("message", "Catergory is delete!");
-		return new ModelAndView("redirect:/admin/catergorys",model);
+		return new ModelAndView("redirect:/admin/catergories",model);
 	}
 	@GetMapping("edit/{id}")
 	public ModelAndView edit(ModelMap model,@PathVariable("id") Long id) {
 		Optional<Catergory> opt = catergoryService.findById(id);
-		CatergoryRequest dto= new CatergoryRequest();
+		CatergoryDto dto= new CatergoryDto();
 		if(opt.isPresent()) {
 			Catergory enity = opt.get();
 			BeanUtils.copyProperties(enity, dto);
 			dto.setEdit(true);
 			model.addAttribute("catergory", dto);
-			return  new ModelAndView("admin/catergory/add",model);
+			return  new ModelAndView("admin/catergories/add",model);
 		}
 		model.addAttribute("message", "Catergory is not existed");
-		return new ModelAndView("redirect:/admin/catergorys",model);
+		return new ModelAndView("redirect:/admin/catergories",model);
 	}
 	@PostMapping("/update")
-    public ModelAndView updateOrUpdate(ModelMap model, CatergoryRequest dto){
+    public ModelAndView updateOrUpdate(ModelMap model, CatergoryDto dto){
 		Catergory catergory = new Catergory();
 		catergory.setId(dto.getId());
 		BeanUtils.copyProperties(dto, catergory);
-
+		
 		catergoryService.save(catergory);
-
-        return new ModelAndView("redirect:/admin/catergorys",model) ;
+    	
+        return new ModelAndView("redirect:/admin/catergories",model) ;
     }
+	@GetMapping("/search")
+	public String findByName(ModelMap model, @RequestParam(name="nameSearch",required=false) String name) {
+		List<Catergory> list =null;
+		System.out.println("SEARCH: "+name);
+		if(StringUtils.hasText(name)) {
+			list = catergoryService.findByNameContaining(name);
+			System.out.println("List" + list.toString());
+		}
+		else {
+			list = catergoryService.findAll();
+			
+		}
+		model.addAttribute("catergorys",list);
+		model.addAttribute("catergory",new CatergoryDto());
+		return "admin/catergory/list";
+	}
 }

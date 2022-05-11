@@ -1,6 +1,5 @@
 package com.nhom11.webseller.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -8,8 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +21,7 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable{
+public class User {
 	@Id
 	@Column(columnDefinition = "varchar(50)", nullable = false)
 	private String username;
@@ -47,12 +46,14 @@ public class User implements Serializable{
 	@Column(columnDefinition = "varchar(15)")
 	private String mobile;
 
-	@Column(name = "registered_at", columnDefinition="date")
+	@Column(name = "registered_at")
 	private Date registeredAt;
 
-	@Column(columnDefinition = "nvarchar(255)")
+	@Column(columnDefinition = "nvarchar(255)", nullable = false)
 	private String image;
 
+	@OneToOne(mappedBy = "user")
+    private Cart cart;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@EqualsAndHashCode.Exclude

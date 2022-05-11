@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{layout/main}"
+>
+    <head>
+       <title>Liên hệ</title>
+       <link rel="stylesheet" th:href="@{/css/contact.css}">
+    </style>
+    </head>
+
+    <body>
+        <div layout:fragment="content">
+            <form class="form form-contact">
+                <h1 style="text-align: center;">Form liên hệ</h1>
+                
+            <div class="contentform">
+                <div id="sendmessage"> </div>
+        
+        
+                <div class="leftcontact">
+                          <div class="form-group">
+                            <p>Tiêu đề<span>*</span></p>
+                            <span class="icon-case"><i class="fa fa-male"></i></span>
+                                <input type="text" name="nom" id="nom" data-rule="required" data-msg=""/>
+                        <div class="validation"></div>
+               </div> 
+        
+                    <div class="form-group">
+                    <p>Name <span>*</span></p>
+                    <span class="icon-case"><i class="fa fa-user"></i></span>
+                        <input type="text" name="prenom" id="prenom" data-rule="required" data-msg=""/>
+                        <div class="validation"></div>
+                    </div>
+        
+                    <div class="form-group">
+                    <p>E-mail <span>*</span></p>	
+                    <span class="icon-case"><i class="fa fa-envelope-o"></i></span>
+                        <input type="email" name="email" id="email" data-rule="email" data-msg=""/>
+                        <div class="validation"></div>
+                    </div>	
+        
+        
+            </div>
+        
+            <div class="rightcontact">	
+        
+                    <div class="form-group">
+                    <p>Địa chỉ <span>*</span></p>
+                    <span class="icon-case"><i class="fa-solid fa-location-arrow"></i></span>
+                        <input type="text" name="ville" id="ville" data-rule="required" data-msg=""/>
+                        <div class="validation"></div>
+                    </div>	
+        
+                    <div class="form-group">
+                    <p>Số điện Thoại <span>*</span></p>	
+                    <span class="icon-case"><i class="fa fa-phone"></i></span>
+                        <input type="text" name="phone" id="phone" data-rule="maxlen:10" data-msg=""/>
+                        <div class="validation"></div>
+                    </div>
+      
+                    <div class="form-group">
+                    <p>Tin nhắn <span>*</span></p>
+                    <span class="icon-case"><i class="fa-solid fa-message"></i></span>
+                        <textarea name="message" rows="14" data-rule="required" data-msg=""></textarea>
+                        <div class="validation"></div>
+                    </div>	
+            </div>
+            </div>
+        <button type="submit" class="bouton-contact">Send</button>
+            
+        </form>
+        </div>
+    </body>
+</html>

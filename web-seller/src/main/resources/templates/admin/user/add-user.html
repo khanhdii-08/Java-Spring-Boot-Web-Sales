@@ -11,28 +11,41 @@
     <div class="app d-flex justify-content-center">
         <div layout:fragment="content">
             <h3 style="padding-top: 10px;text-align:center;">Thêm người dùng</h3>
-            <form action="#" th:action="@{/admin/users/saveOrUpdate}"
+            <form id="formAdd" action="#" th:action="@{/admin/users/saveOrUpdate}"
                 class="form d-flex mt-3 flex-column justify-content-center align-items-center" method="post"
                 enctype="multipart/form-data" th:object="${user}">
                 <div class="row justify-content-center">
                     <div class="col col-8 mt-3">
 
                         <div class="row mb-2">
-                            <div class="input-group col">
-                                <span class="input-group-text">Họ</span>
-                                <input type="text" th:field="*{firstName}" class="form-control" placeholder="Nhập họ">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                               
+                                    <span class="input-group-text">Họ</span>
+                                    <input id="txtFirstName" type="text" th:field="*{firstName}" class="form-control" placeholder="Nhập họ">
+                                    
+                                </div>
+                                <span id="errorFirstName" class="text-danger"></span>
                             </div>
-                            <div class="input-group col">
-                                <span class="input-group-text">Tên</span>
-                                <input type="text" th:field="*{lastName}" class="form-control" placeholder="Nhập tên">
+                            
+                                
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text">Tên</span>
+                                    <input  id="txtLastName" type="text" th:field="*{lastName}" class="form-control" placeholder="Nhập tên">
+                                    
+                                </div>
+                                <span id="errorLastName" class="text-danger"></span>
                             </div>
+                            
                         </div>
 
                         <div class="input-group mb-2">
                             <span class="input-group-text">Email</span>
-                            <input type="text" th:field="*{email}" class="form-control" placeholder="Nhập email">
+                            <input id="txtEmail" type="text" th:field="*{email}" class="form-control" placeholder="Nhập email">
                         </div>
-
+                        <span id="errorEmail" class="text-danger mb-1"></span>
+                        
                         <div class="input-group mb-2">
                             <span class="input-group-text">Số điện thoại</span>
                             <input type="text" th:field="*{mobile}" class="form-control"
@@ -51,14 +64,16 @@
 
                         <div class="input-group mb-2">
                             <span class="input-group-text">Mật khẩu</span>
-                            <input type="password" th:field="*{password}" class="form-control"
+                            <input id="txtPass" type="password" th:field="*{password}" class="form-control"
                                 placeholder="Nhập mật khẩu">
                         </div>
+                        <span id="errorPass" class="text-danger"></span>
 
                         <div class="input-group mb-2">
                             <span class="input-group-text">Xác Nhận Mật khẩu</span>
-                            <input type="password" class="form-control" placeholder="Nhập lại mật khẩu">
+                            <input id="txtRePass" type="password" class="form-control" placeholder="Nhập lại mật khẩu">
                         </div>
+                        <span id="errorRePass" class="text-danger"></span>
                         <div class="input-group mb-2">
                             <label class="input-group-text" for="inputGroupSelect">Options</label>
                             <select th:field="*{authority}" class="form-select" id="inputGroupSelect">
@@ -90,7 +105,10 @@
                 </div>
             </form>
         </div>
+        
+        
     </div>
+    <script th:src="@{/js/add-user.js}"></script>
 </body>
 
 </html>

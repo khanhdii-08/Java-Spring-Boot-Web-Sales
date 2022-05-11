@@ -4,7 +4,7 @@
             for(var j = 0; j < imageHovers.length; j++){
                 if(imageHovers[j].value){
                     imageHovers[j].classList.add("image-hover");
-                    imageZooms[j].src ="/admin/products/images/"+ imageHovers[j].value;
+                    imageZooms[j].src ="/products/images/"+ imageHovers[j].value;
                 }
             }
 

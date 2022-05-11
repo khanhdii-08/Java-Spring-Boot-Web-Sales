@@ -324,3 +324,21 @@
   height: 40px;
   border-radius: 50%;
 }
+
+.cart-plus{
+  position: relative;
+}
+.totalProduct {
+  position: absolute;
+  top: -3px;
+  right: 21px;
+  /* float: right; */
+  background-color: red;
+  border-radius: 50%;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+  display: none;
+}
